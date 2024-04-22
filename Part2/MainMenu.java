@@ -35,7 +35,7 @@ public class MainMenu extends JFrame {
             tutorialWindow.setVisible(true);
         });
 
-        //Opens the Horse Customisation window.
+        //Opens the Horse Customisation window
         customizeButton.addActionListener(e -> {
             CustomiseHorse customiseHorseWindow = new CustomiseHorse();
             customiseHorseWindow.setVisible(true);
