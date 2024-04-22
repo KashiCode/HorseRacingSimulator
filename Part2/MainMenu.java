@@ -29,12 +29,20 @@ public class MainMenu extends JFrame {
         buttonPanel.add(tutorialButton);
         buttonPanel.add(exitButton);
 
+        //Opens the tutorial window. 
         tutorialButton.addActionListener(e -> {
-            // This line assumes you have a Tutorial class in the same package.
             Tutorial tutorialWindow = new Tutorial();
             tutorialWindow.setVisible(true);
         });
 
+        //Opens the Horse Customisation window.
+        customizeButton.addActionListener(e -> {
+            CustomiseHorse customiseHorseWindow = new CustomiseHorse();
+            customiseHorseWindow.setVisible(true);
+        });
+        
+
+        //Exits the program.
         exitButton.addActionListener(e -> System.exit(0));
 
         setSize(800, 400);

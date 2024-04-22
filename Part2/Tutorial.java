@@ -10,7 +10,7 @@ public class Tutorial extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        JLabel welcomeLabel = new JLabel("Welcome to the the Tutorial", JLabel.CENTER);
+        JLabel welcomeLabel = new JLabel("Welcome to the Tutorial", JLabel.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(welcomeLabel, BorderLayout.NORTH);
         
