@@ -42,15 +42,15 @@ public class CustomiseHorse extends JFrame {
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
         titlePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titlePanel.add(new JLabel("Name"));
-        titlePanel.add(Box.createHorizontalStrut(15)); // Spacer
+        titlePanel.add(Box.createHorizontalStrut(30)); // Spacer
         titlePanel.add(new JLabel("Symbol"));
-        titlePanel.add(Box.createHorizontalStrut(15)); // Spacer
+        titlePanel.add(Box.createHorizontalStrut(40)); // Spacer
         titlePanel.add(new JLabel("Confidence"));
-        titlePanel.add(Box.createHorizontalStrut(15)); // Spacer
+        titlePanel.add(Box.createHorizontalStrut(30)); // Spacer
         titlePanel.add(new JLabel("Breed"));
-        titlePanel.add(Box.createHorizontalStrut(15)); // Spacer
+        titlePanel.add(Box.createHorizontalStrut(30)); // Spacer
         titlePanel.add(new JLabel("Color"));
-        titlePanel.add(Box.createHorizontalStrut(15)); // Spacer
+        titlePanel.add(Box.createHorizontalStrut(40)); // Spacer
         titlePanel.add(new JLabel("Accessory"));
 
         return titlePanel;
