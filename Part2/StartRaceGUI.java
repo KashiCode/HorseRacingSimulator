@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class RaceGUI extends JFrame {
+public class StartRaceGUI extends JFrame {
     private JTextArea raceDisplay;
     private JButton startButton, resetButton, statsButton, customButton, bettingButton, exitButton;
     private JSpinner distanceSpinner; // Spinner for track distance
     private Race race;
 
-    public RaceGUI() {
+    public StartRaceGUI() {
         // Setup the main frame
         setTitle("Horse Race");
         setSize(800, 600);
@@ -67,8 +67,7 @@ public class RaceGUI extends JFrame {
         // Initialize the race with the track distance
         race = new Race(trackDistance);
 
-        // Add your horses to the race
-        // ...
+        GetHorses();
 
         // Disable the start button to prevent race restarts while running
         startButton.setEnabled(false);
@@ -77,9 +76,15 @@ public class RaceGUI extends JFrame {
         new Thread(race::startRace).start();
     }
 
+    private void GetHorses() {
+        // Placeholder method to get horse details from the user
+    }
+
     // Placeholder methods for button actions
     private void resetRace() {
         // Logic to reset the race
+
+        //startButton.setEnabled(true);
     }
 
     private void showStatistics() {
@@ -90,7 +95,7 @@ public class RaceGUI extends JFrame {
     private void openCustomizations() {
         CustomiseHorse CustomiseHorseWindow = new CustomiseHorse(this); 
         CustomiseHorseWindow.setVisible(true);
-        RaceGUI.this.dispose(); //fix this
+        StartRaceGUI.this.dispose(); //fix this
     }
    
 
@@ -99,6 +104,6 @@ public class RaceGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new RaceGUI().setVisible(true));
+        SwingUtilities.invokeLater(() -> new StartRaceGUI().setVisible(true));
     }
 }

@@ -152,8 +152,10 @@ public class CustomiseHorse extends JDialog {
         JOptionPane.showMessageDialog(this, "No horses added. Please add horses first.");
     } else {
         // Dispose the current dialog and open the new frame
-        this.dispose();
-        new RaceGUI(); // This will create and display the race customisation frame
+        this.dispose();      
+        StartRaceGUI StartRaceGUIWindow = new StartRaceGUI(); 
+        StartRaceGUIWindow.setVisible(true);
+        
     }
 }
 
