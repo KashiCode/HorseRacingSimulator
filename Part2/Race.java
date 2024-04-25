@@ -3,6 +3,19 @@ package Part2;
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
 import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
 
 
 // Race.java
@@ -19,17 +32,44 @@ public class Race {
     private Horse lane1Horse;
     private Horse lane2Horse;
     private Horse lane3Horse;
-    private boolean finished;
     private RaceUpdateListener updateListener;
     private boolean finalMessageSet = false;
+    private List<Horse> horses;
+    private volatile boolean finished = false;
 
     public Race(int distance) {
         raceLength = distance;
         finished = false;
+        horses = new ArrayList<>();
     }
 
     public void setUpdateListener(RaceUpdateListener listener) {
         this.updateListener = listener;
+    }
+
+    public void loadHorsesFromFile(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int laneNumber = 1; // Start with lane 1
+            while ((line = br.readLine()) != null) {
+                String[] attributes = line.split(",");
+                if (attributes.length == 3) { // Adjusted to check for 3 attributes: symbol, name, confidence
+                    char symbol = attributes[0].trim().charAt(0); // Trim whitespace and get the symbol
+                    String name = attributes[1].trim(); // Trim whitespace around the name
+                    double confidence = Double.parseDouble(attributes[2].trim()); // Trim and parse the confidence level
+    
+                    // Create a new Horse object with the read attributes
+                    Horse horse = new Horse(symbol, name, confidence);
+    
+                    // Add the horse to the race in the current lane and then increment the lane number
+                    this.addHorse(horse, laneNumber);
+                    laneNumber = (laneNumber % 3) + 1; // Cycle through lanes 1, 2, 3
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to load horses from file.");
+        }
     }
 
     public void addHorse(Horse theHorse, int laneNumber) {
@@ -110,12 +150,12 @@ public class Race {
         if (lane3Won) winners++;
 
         if (winners > 1) {
-            finalMessageSet = true;
             String drawMessage = "";
             drawMessage = ("It's a draw!\n");
             updateListener.updateDisplay(drawMessage);
             System.out.println("It's a draw!");
             finished = true;
+            finalMessageSet = true;
         } else if (winners == 1) {
             finalMessageSet = true;
             String winnerMessage = "";
@@ -128,6 +168,7 @@ public class Race {
             }
             updateListener.updateDisplay(winnerMessage);
             finished = true;
+            finalMessageSet = true;
         }
     }
 
@@ -143,31 +184,33 @@ public class Race {
         }
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
     private boolean raceWonBy(Horse theHorse) {
         return theHorse != null && theHorse.getDistanceTravelled() >= raceLength;
     }
 
     private void printRace() {
-        StringBuilder sb = new StringBuilder();
-        
-        // Clear the JTextArea before appending new text.
-        if (updateListener != null) {
-            updateListener.updateDisplay(""); // Clear the display
+        if (finalMessageSet) {
+            // Do not print the race status; the final message is already displayed.
+            return;
         }
         
+        StringBuilder sb = new StringBuilder();
         sb.append(multiplePrint('=', raceLength + 3)).append("\n");
-        
         sb.append(printLane(lane1Horse)).append("\n");
         sb.append(printLane(lane2Horse)).append("\n");
         sb.append(printLane(lane3Horse)).append("\n");
-        
         sb.append(multiplePrint('=', raceLength + 3)).append("\n");
-        
-        // Now append the new frame.
+    
+        // Update the display with the new frame
         if (updateListener != null) {
             updateListener.updateDisplay(sb.toString());
         }
     }
+    
 
     private String printLane(Horse theHorse) {
         StringBuilder sb = new StringBuilder();
@@ -199,14 +242,9 @@ public class Race {
     }
 
     private void updateRaceDisplay() {
-        // Only update the race display if a final message has not been set
+        // Invoke printRace only if the race is ongoing
         if (!finalMessageSet) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    printRace();
-                }
-            });
+            SwingUtilities.invokeLater(this::printRace);
         }
     }
 }

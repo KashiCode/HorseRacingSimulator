@@ -57,28 +57,48 @@ public class StartRaceGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(raceDisplay);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Rest of the initialization...
+        
     }
 
     private void startRace(ActionEvent e) {
-        // Retrieve the track distance value from the spinner
         int trackDistance = (Integer) distanceSpinner.getValue();
-
+    
         // Initialize the race with the track distance
         race = new Race(trackDistance);
-
-        GetHorses();
-
+        
+        // Set the update listener for race updates
+        race.setUpdateListener(new RaceUpdateListener() {
+            @Override
+            public void updateDisplay(String text) {
+                SwingUtilities.invokeLater(() -> {
+                    if (!race.isFinished()) {
+                        // Refresh the display with the new frame
+                        raceDisplay.setText(text);
+                    } else {
+                        // Append the final message without clearing
+                        raceDisplay.append(text + "\n");
+                    }
+                });
+            }
+        });
+    
+        // You may want to load horses from a file or add them manually
+        // Uncomment the following line if you wish to load horses from a file
+        //race.loadHorsesFromFile("I:\\TES\\HorseRace Starter\\horseDetails.txt");
+    
+        // Manually add horses to the race for testing
+        race.addHorse(new Horse('A', "Lightning", 0.7), 1);
+        race.addHorse(new Horse('B', "Thunder", 0.7), 2);
+        race.addHorse(new Horse('C', "Storm", 0.8), 3);
+    
         // Disable the start button to prevent race restarts while running
         startButton.setEnabled(false);
-
+    
         // Start the race in a separate thread to keep the GUI responsive
         new Thread(race::startRace).start();
     }
 
-    private void GetHorses() {
-        // Placeholder method to get horse details from the user
-    }
+
 
     // Placeholder methods for button actions
     private void resetRace() {
