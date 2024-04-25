@@ -53,7 +53,7 @@ public class Race {
             int laneNumber = 1; // Start with lane 1
             while ((line = br.readLine()) != null) {
                 String[] attributes = line.split(",");
-                if (attributes.length == 3) { // Adjusted to check for 3 attributes: symbol, name, confidence
+                if (attributes.length >= 3) { // Ensure there are at least three attributes
                     char symbol = attributes[0].trim().charAt(0); // Trim whitespace and get the symbol
                     String name = attributes[1].trim(); // Trim whitespace around the name
                     double confidence = Double.parseDouble(attributes[2].trim()); // Trim and parse the confidence level

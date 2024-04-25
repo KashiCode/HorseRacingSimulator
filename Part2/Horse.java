@@ -40,6 +40,13 @@ public class Horse
         return breed;
     }
 
+        // Resets the horse's state for a new race
+        public void resetHorse() {
+            DistanceTravelled = 0;
+            hasFallen = false;
+        }
+    }
+
     public void setBreed(String breed) {
         this.breed = breed;
     }

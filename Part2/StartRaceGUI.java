@@ -13,7 +13,7 @@ public class StartRaceGUI extends JFrame {
     public StartRaceGUI() {
         // Setup the main frame
         setTitle("Horse Race");
-        setSize(800, 600);
+        setSize(800, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -84,12 +84,12 @@ public class StartRaceGUI extends JFrame {
     
         // You may want to load horses from a file or add them manually
         // Uncomment the following line if you wish to load horses from a file
-        //race.loadHorsesFromFile("I:\\TES\\HorseRace Starter\\horseDetails.txt");
+        race.loadHorsesFromFile("I:\\TES\\HorseRace Starter\\horseAttribute.txt");
     
         // Manually add horses to the race for testing
-        race.addHorse(new Horse('A', "Lightning", 0.7), 1);
-        race.addHorse(new Horse('B', "Thunder", 0.7), 2);
-        race.addHorse(new Horse('C', "Storm", 0.8), 3);
+        //race.addHorse(new Horse('A', "Lightning", 0.7), 1);
+        //race.addHorse(new Horse('B', "Thunder", 0.7), 2);
+        //race.addHorse(new Horse('C', "Storm", 0.8), 3);
     
         // Disable the start button to prevent race restarts while running
         startButton.setEnabled(false);
@@ -102,9 +102,9 @@ public class StartRaceGUI extends JFrame {
 
     // Placeholder methods for button actions
     private void resetRace() {
-        // Logic to reset the race
-
-        //startButton.setEnabled(true);
+        race.resetRace(); // Reset the race state
+        startButton.setEnabled(true); // Enable the start button again
+        raceDisplay.setText(""); // Clear the race display
     }
 
     private void showStatistics() {
