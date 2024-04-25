@@ -153,7 +153,7 @@ public class CustomiseHorse extends JDialog {
     } else {
         // Dispose the current dialog and open the new frame
         this.dispose();
-        new StartRaceGUI(); // This will create and display the race customisation frame
+        new RaceGUI(); // This will create and display the race customisation frame
     }
 }
 

@@ -83,12 +83,16 @@ public class RaceGUI extends JFrame {
     }
 
     private void showStatistics() {
-        // Logic to show statistics
+            Statistics StatisticsWindow = new Statistics(); 
+            StatisticsWindow.setVisible(true);
     }
 
     private void openCustomizations() {
-        // Logic to open customization options
+        CustomiseHorse CustomiseHorseWindow = new CustomiseHorse(this); 
+        CustomiseHorseWindow.setVisible(true);
+        RaceGUI.this.dispose(); //fix this
     }
+   
 
     private void virtualBetting() {
         // Logic for virtual betting
