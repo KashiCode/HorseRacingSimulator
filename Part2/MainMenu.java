@@ -40,7 +40,7 @@ public class MainMenu extends JFrame {
         // Opens the Horse Customisation window
         customizeButton.addActionListener(e -> {
             if (CreateFiles()) {
-                JOptionPane.showMessageDialog(this, "Files checked and created successfully.");
+                JOptionPane.showMessageDialog(this, "Files checked and created successfully."); //redit
                 CustomiseHorse customiseHorseWindow = new CustomiseHorse(); //link to CustomiseHorse.java
                 customiseHorseWindow.setVisible(true);
             } else {
@@ -90,14 +90,13 @@ public class MainMenu extends JFrame {
             boolean horseFileCreated = horseFile.createNewFile();
             boolean raceFileCreated = raceFile.createNewFile();
             
-            // Return true if both files were successfully created or already exist.
-            return horseFileCreated || !horseFile.exists() && raceFileCreated || !raceFile.exists();
+            // Check if both files exist or were created successfully.
+            return (horseFileCreated || horseFile.exists()) && (raceFileCreated || raceFile.exists());
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
     }
-
     
 
     public static void main(String[] args) {
