@@ -59,9 +59,9 @@ public class CustomiseHorse extends JDialog {
     private void addHorseComponents(JPanel panel, String title) {
         panel.add(new JLabel(title));
         panel.add(new JLabel()); // Empty placeholder for alignment
-        panel.add(new JLabel("Name:"));
-        panel.add(new JTextField());
         panel.add(new JLabel("Symbol:"));
+        panel.add(new JTextField());
+        panel.add(new JLabel("Name:"));
         panel.add(new JTextField());
         panel.add(new JLabel("Confidence:"));
         panel.add(new JSpinner(new SpinnerNumberModel(0.5, 0.1, 0.9, 0.01)));
