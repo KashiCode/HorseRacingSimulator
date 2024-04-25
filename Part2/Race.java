@@ -241,6 +241,17 @@ public class Race {
         return sb.toString();
     }
 
+    public void resetRace() {
+        // Reset race-specific flags
+        finished = false;
+        finalMessageSet = false;
+    
+        // Reset the state of each horse
+        if (lane1Horse != null) lane1Horse.resetHorse();
+        if (lane2Horse != null) lane2Horse.resetHorse();
+        if (lane3Horse != null) lane3Horse.resetHorse();
+    }
+
     private void updateRaceDisplay() {
         // Invoke printRace only if the race is ongoing
         if (!finalMessageSet) {
