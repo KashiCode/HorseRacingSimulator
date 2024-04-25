@@ -2,122 +2,164 @@ package Part2;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.*;
 
-public class CustomiseHorse extends JFrame {
-    public CustomiseHorse() {
-        setTitle("Customise Horse");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only this window on close
-        getContentPane().setBackground(Color.WHITE);
 
-        // Main layout with vertical box layout
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+public class CustomiseHorse extends JDialog {
+    private final int HORSE_FIELDS = 6; 
 
-        // Add a title label for the window
-        JLabel titleLabel = new JLabel("Customise Your Horses", JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the label
-        add(titleLabel);
+    public CustomiseHorse(JFrame parent) {
+        super(parent, "Create Horses", true);
+        setSize(500, 800);
+        setLayout(new GridLayout(0, 1)); 
+        setLocationRelativeTo(parent);
 
-        // Add a panel with titles for the fields
-        add(createTitlePanel());
-
-        // Create form fields for 6 horses
-        for (int i = 0; i < 6; i++) {
-            add(Box.createRigidArea(new Dimension(0, 10))); // Spacer
-            add(createHorseCustomisationPanel(i + 1));
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        
+        for (int i = 1; i <= 3; i++) {
+            JPanel horsePanel = new JPanel(new GridLayout(0, 2)); // Use GridLayout for label-input pairs
+            addHorseComponents(horsePanel, "Horse " + i);
+            contentPanel.add(horsePanel);
         }
+        
+        JScrollPane scrollPane = new JScrollPane(contentPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        add(scrollPane, BorderLayout.CENTER);
 
-        // Add control buttons at the bottom
-        add(createControlPanel());
+        JButton createButton = new JButton("Create Horses");
+        createButton.addActionListener(this::writeHorseDetails);
 
-        pack(); // Pack the components tightly together
-        setLocationRelativeTo(null); // Center on screen
+        JButton resetButton = new JButton("Reset Horses");
+        resetButton.addActionListener(this::resetHorseDetails);
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.addActionListener(e -> System.exit(0));
+
+        JButton continueButton = new JButton("Continue");
+        continueButton.addActionListener(e -> openRaceCustomisationPage());
+        
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(createButton);
+        contentPanel.add(buttonPanel);
+        buttonPanel.add(resetButton);
+        buttonPanel.add(exitButton);
+        buttonPanel.add(continueButton);
+    
+        
         setVisible(true);
     }
 
-    private JPanel createTitlePanel() {
-        JPanel titlePanel = new JPanel();
-        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
-        titlePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        titlePanel.add(new JLabel("Name"));
-        titlePanel.add(Box.createHorizontalStrut(30)); // Spacer
-        titlePanel.add(new JLabel("Symbol"));
-        titlePanel.add(Box.createHorizontalStrut(40)); // Spacer
-        titlePanel.add(new JLabel("Confidence"));
-        titlePanel.add(Box.createHorizontalStrut(30)); // Spacer
-        titlePanel.add(new JLabel("Breed"));
-        titlePanel.add(Box.createHorizontalStrut(30)); // Spacer
-        titlePanel.add(new JLabel("Color"));
-        titlePanel.add(Box.createHorizontalStrut(40)); // Spacer
-        titlePanel.add(new JLabel("Accessory"));
-
-        return titlePanel;
+    private void addHorseComponents(JPanel panel, String title) {
+        panel.add(new JLabel(title));
+        panel.add(new JLabel()); // Empty placeholder for alignment
+        panel.add(new JLabel("Name:"));
+        panel.add(new JTextField());
+        panel.add(new JLabel("Symbol:"));
+        panel.add(new JTextField());
+        panel.add(new JLabel("Confidence:"));
+        panel.add(new JSpinner(new SpinnerNumberModel(0.5, 0.1, 0.9, 0.01)));
+        panel.add(new JLabel("Color:"));
+        panel.add(new JComboBox<>(new String[]{"Black", "White", "Brown", "Gray", "Red", "Green", "Blue", "Yellow", "Purple", "Orange", "Pink", "Cyan", "Silver", "Gold"}));
+        panel.add(new JLabel("Breed:"));
+        panel.add(new JComboBox<>(new String[]{"Bojack", "Arabian", "Thoroughbred", "Quarter Horse", "Appaloosa", "Connemara Pony", "Akhal-Teke", "Gypsy Vanner", "Mule"}));
+        panel.add(new JLabel("Accessories:"));
+        panel.add(new JComboBox<>(new String[]{"No Accessory", "Racing Saddle", "Lucky Horseshoe", "Golden Hooves", "Enchanted Saddle", "Pegasis Wings", "Enhanced Blinders"}));
     }
 
-    private JPanel createHorseCustomisationPanel(int horseNumber) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    private void writeHorseDetails(ActionEvent e) {
 
-        panel.add(new JLabel("Horse " + horseNumber + ": "));
-        panel.add(Box.createHorizontalStrut(5)); // Spacer
+        if (checkExistingHorses()) {
+            JOptionPane.showMessageDialog(this, "Horses already exist, please press the Continue Button");
+            return;
+        }
 
-        JTextField nameField = new JTextField(10);
-        panel.add(nameField);
-        panel.add(Box.createHorizontalStrut(5)); // Spacer
-
-        JTextField symbolField = new JTextField(2);
-        panel.add(symbolField);
-        panel.add(Box.createHorizontalStrut(5)); // Spacer
-
-        JTextField confidenceField = new JTextField(5);
-        panel.add(confidenceField);
-        panel.add(Box.createHorizontalStrut(5)); // Spacer
-
-        String[] breeds = {"Breed 1", "Breed 2", "Breed 3", "Breed 4"};
-        JComboBox<String> breedComboBox = new JComboBox<>(breeds);
-        panel.add(breedComboBox);
-        panel.add(Box.createHorizontalStrut(5)); // Spacer
-
-        String[] colors = {"Color 1", "Color 2", "Color 3", "Color 4"};
-        JComboBox<String> colorComboBox = new JComboBox<>(colors);
-        panel.add(colorComboBox);
-        panel.add(Box.createHorizontalStrut(5)); // Spacer
-
-        String[] accessories = {"Accessory 1", "Accessory 2", "Accessory 3", "Accessory 4"};
-        JComboBox<String> accessoryComboBox = new JComboBox<>(accessories);
-        panel.add(accessoryComboBox);
-
-        return panel;
+        try (
+            FileWriter fw = new FileWriter("I:\\TES\\HorseRace Starter\\horseAttribute.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw)
+        ) {
+            Component[] components = getContentPane().getComponents();
+            // Obtain the horse panels from the content panel
+            JPanel contentPanel = (JPanel) ((JViewport) ((JScrollPane) components[0]).getComponent(0)).getView();
+            for (int i = 0; i < contentPanel.getComponentCount() - 1; i++) {
+                JPanel horsePanel = (JPanel) contentPanel.getComponent(i);
+                Component[] horseComponents = horsePanel.getComponents();
+                
+                String name = ((JTextField)horseComponents[3]).getText().trim();
+                String symbol = ((JTextField)horseComponents[5]).getText().trim();
+                double confidence = (double)((JSpinner)horseComponents[7]).getValue();
+                String color = (String)((JComboBox)horseComponents[9]).getSelectedItem();
+                String breed = (String)((JComboBox)horseComponents[11]).getSelectedItem();
+                String accessories = (String)((JComboBox)horseComponents[13]).getSelectedItem();
+                
+                // Validate input before writing to file
+                if (!name.isEmpty() && !symbol.isEmpty() && confidence >= 0.35 && confidence <= 0.65) {
+                    out.println(name + "," + symbol + "," + confidence + "," + color + "," + breed + "," + accessories);
+                } else {
+                    // Handle invalid input appropriately
+                    JOptionPane.showMessageDialog(this, "Please fill all fields with valid information for each horse.");
+                    return; // Stop the process if there is invalid input
+                }
+            }
+            JOptionPane.showMessageDialog(this, "Horses created successfully!");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Failed to create horses.");
+        }
+        dispose(); // Close the dialog after saving the data
     }
 
-    private JPanel createControlPanel() {
-        JPanel controlPanel = new JPanel();
-        controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-        JButton continueButton = new JButton("CONTINUE");
-        continueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Action for the CONTINUE button
-                JOptionPane.showMessageDialog(CustomiseHorse.this, "Continue to the next phase.");
+    private boolean checkExistingHorses() {
+        int count = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader("I:\\TES\\HorseRace Starter\\horseAttribute.txt"))) {
+            while (reader.readLine() != null && count < 3) {
+                count++;
             }
-        });
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return count >= 3;
+    }
 
-        JButton exitButton = new JButton("EXIT");
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Action for the EXIT button
-                System.exit(0);
+    private void resetHorseDetails(ActionEvent e) {
+        int dialogResult = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to erase all horse details?",
+                "Reset Confirmation",
+                JOptionPane.YES_NO_OPTION);
+
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            // Erase the horse details from the file
+            try (PrintWriter writer = new PrintWriter("I:\\TES\\HorseRace Starter\\horseAttribute.txt")) {
+                // Just opening the file with a PrintWriter will erase its contents
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to reset horses.");
             }
-        });
+        }
+    }
 
-        controlPanel.add(continueButton);
-        controlPanel.add(exitButton);
+    private void openRaceCustomisationPage() {
+    // Check if the horse file contains entries before opening the race customisation page
+    if (!checkExistingHorses()) {
+        // Display message if no horses are found
+        JOptionPane.showMessageDialog(this, "No horses added. Please add horses first.");
+    } else {
+        // Dispose the current dialog and open the new frame
+        this.dispose();
+        new StartRaceGUI(); // This will create and display the race customisation frame
+    }
+}
 
-        return controlPanel;
+      
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new CustomiseHorse(null));
     }
 }

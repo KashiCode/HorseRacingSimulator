@@ -33,16 +33,23 @@ public class MainMenu extends JFrame {
 
         // Opens the tutorial window.
         tutorialButton.addActionListener(e -> {
-            Tutorial tutorialWindow = new Tutorial(); // Make sure the Tutorial class exists and is properly implemented
+            Tutorial tutorialWindow = new Tutorial(); 
             tutorialWindow.setVisible(true);
         });
+
+        // Opens the Statistics Window. 
+        statsButton.addActionListener(e -> {
+            Statistics StatisticsWindow = new Statistics(); 
+            StatisticsWindow.setVisible(true);
+        });
+
 
         // Opens the Horse Customisation window
         customizeButton.addActionListener(e -> {
             if (CreateFiles()) {
                 JOptionPane.showMessageDialog(this, "Files checked and created successfully."); //redit
-                CustomiseHorse customiseHorseWindow = new CustomiseHorse(); //link to CustomiseHorse.java
-                customiseHorseWindow.setVisible(true);
+                CustomiseHorse CustomiseHorseWindow = new CustomiseHorse(this); //link to CustomiseHorse.java
+                CustomiseHorseWindow.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to check or create files.");
             }

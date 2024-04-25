@@ -26,6 +26,13 @@ public class Statistics extends JFrame {
         add(scrollPane);
 
         setVisible(true);
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.addActionListener(e -> System.exit(0));
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(exitButton);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     private void loadHorseAttributes(JTextArea textArea) {
