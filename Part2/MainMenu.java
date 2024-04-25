@@ -41,7 +41,7 @@ public class MainMenu extends JFrame {
         customizeButton.addActionListener(e -> {
             if (CreateFiles()) {
                 JOptionPane.showMessageDialog(this, "Files checked and created successfully.");
-                CustomiseHorse customiseHorseWindow = new CustomiseHorse(); // Ensure CustomiseHorse class exists and is properly implemented
+                CustomiseHorse customiseHorseWindow = new CustomiseHorse(); //link to CustomiseHorse.java
                 customiseHorseWindow.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to check or create files.");
@@ -85,25 +85,20 @@ public class MainMenu extends JFrame {
         String directoryPath = "I:\\TES\\HorseRace Starter\\";
         File horseFile = new File(directoryPath + "horseAttribute.txt");
         File raceFile = new File(directoryPath + "raceResults.txt");
-
+    
         try {
-            if (horseFile.createNewFile()) {
-                JOptionPane.showMessageDialog(this, "Horse file created: " + horseFile.getAbsolutePath());
-            } else {
-                JOptionPane.showMessageDialog(this, "Horse file already exists.");
-            }
-
-            if (raceFile.createNewFile()) {
-                JOptionPane.showMessageDialog(this, "Race file created: " + raceFile.getAbsolutePath());
-            } else {
-                JOptionPane.showMessageDialog(this, "Race file already exists.");
-            }
-            return true;
+            boolean horseFileCreated = horseFile.createNewFile();
+            boolean raceFileCreated = raceFile.createNewFile();
+            
+            // Return true if both files were successfully created or already exist.
+            return horseFileCreated || !horseFile.exists() && raceFileCreated || !raceFile.exists();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
     }
+
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new MainMenu());
