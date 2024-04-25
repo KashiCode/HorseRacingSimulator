@@ -3,6 +3,8 @@ package Part2;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 
 public class MainMenu extends JFrame {
     public MainMenu() {
@@ -29,20 +31,24 @@ public class MainMenu extends JFrame {
         buttonPanel.add(tutorialButton);
         buttonPanel.add(exitButton);
 
-        //Opens the tutorial window. 
+        // Opens the tutorial window.
         tutorialButton.addActionListener(e -> {
-            Tutorial tutorialWindow = new Tutorial();
+            Tutorial tutorialWindow = new Tutorial(); // Make sure the Tutorial class exists and is properly implemented
             tutorialWindow.setVisible(true);
         });
 
-        //Opens the Horse Customisation window
+        // Opens the Horse Customisation window
         customizeButton.addActionListener(e -> {
-            CustomiseHorse customiseHorseWindow = new CustomiseHorse();
-            customiseHorseWindow.setVisible(true);
+            if (CreateFiles()) {
+                JOptionPane.showMessageDialog(this, "Files checked and created successfully.");
+                CustomiseHorse customiseHorseWindow = new CustomiseHorse(); // Ensure CustomiseHorse class exists and is properly implemented
+                customiseHorseWindow.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to check or create files.");
+            }
         });
-        
 
-        //Exits the program.
+        // Exits the program.
         exitButton.addActionListener(e -> System.exit(0));
 
         setSize(800, 400);
@@ -75,8 +81,31 @@ public class MainMenu extends JFrame {
         return button;
     }
 
+    private boolean CreateFiles() {
+        String directoryPath = "I:\\TES\\HorseRace Starter\\";
+        File horseFile = new File(directoryPath + "horseAttribute.txt");
+        File raceFile = new File(directoryPath + "raceResults.txt");
+
+        try {
+            if (horseFile.createNewFile()) {
+                JOptionPane.showMessageDialog(this, "Horse file created: " + horseFile.getAbsolutePath());
+            } else {
+                JOptionPane.showMessageDialog(this, "Horse file already exists.");
+            }
+
+            if (raceFile.createNewFile()) {
+                JOptionPane.showMessageDialog(this, "Race file created: " + raceFile.getAbsolutePath());
+            } else {
+                JOptionPane.showMessageDialog(this, "Race file already exists.");
+            }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new MainMenu());
     }
 }
-
