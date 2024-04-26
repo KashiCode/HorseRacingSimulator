@@ -125,6 +125,7 @@ public class Race {
         double fallProbability = 0.05 * theHorse.getConfidence() * Math.pow(theHorse.getDistanceTravelled() + 1, -0.1);
         if (Math.random() < fallProbability) {
             theHorse.fall();
+            theHorse.decreaseConfidence();
         }
 
         updateRaceDisplay();
@@ -151,10 +152,13 @@ public class Race {
             finalMessageSet = true;
             String winnerMessage = "";
             if (lane1Won) {
+                lane1Horse.increaseConfidence();
                 winnerMessage = lane1Horse.getName() + " has won the race!\n";
             } else if (lane2Won) {
+                lane2Horse.increaseConfidence();
                 winnerMessage = lane2Horse.getName() + " has won the race!\n";
             } else if (lane3Won) {
+                lane3Horse.increaseConfidence();
                 winnerMessage = lane3Horse.getName() + " has won the race!\n";
             }
             updateListener.updateDisplay(winnerMessage);
