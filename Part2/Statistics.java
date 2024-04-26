@@ -61,21 +61,15 @@ public class Statistics extends JFrame {
     }
 
     private void loadRaceResults(JTextArea textArea) {
-
-
         String filePath = System.getProperty("user.dir") + File.separator + "raceResults.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             textArea.append("Race Results:\n");
-            textArea.append("Race ID | Winner | Speed | Time\n");
-            textArea.append("--------------------------------------\n");
             while ((line = reader.readLine()) != null) {
-                String[] results = line.split(",");
-                textArea.append(String.format("%s | %s | %.2f | %.2f\n",
-                        results[0], results[1], Double.parseDouble(results[2]), Double.parseDouble(results[3])));
+                textArea.append(line + "\n");
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Failed to read race results.");
+            JOptionPane.showMessageDialog(null, "Failed to read race results.", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }

@@ -4,9 +4,12 @@ import java.lang.Math;
 import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 
 // Race.java
@@ -27,6 +30,7 @@ public class Race {
     private boolean finalMessageSet = false;
     private List<Horse> horses;
     private volatile boolean finished = false;
+    private int raceCount = 0;
 
     public Race(int distance) {
         raceLength = distance;
@@ -41,20 +45,26 @@ public class Race {
     public void loadHorsesFromFile(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
-            int laneNumber = 1; // Start with lane 1
+            int laneNumber = 1;  // Start with lane 1
             while ((line = br.readLine()) != null) {
                 String[] attributes = line.split(",");
-                if (attributes.length >= 3) { // Ensure there are at least three attributes
-                    char symbol = attributes[0].trim().charAt(0); // Trim whitespace and get the symbol
-                    String name = attributes[1].trim(); // Trim whitespace around the name
-                    double confidence = Double.parseDouble(attributes[2].trim()); // Trim and parse the confidence level
+                if (attributes.length == 6) {  // Ensure there are six attributes: symbol, name, confidence, color, breed, accessory
+                    char symbol = attributes[0].trim().charAt(0);
+                    String name = attributes[1].trim();
+                    double confidence = Double.parseDouble(attributes[2].trim());
+                    String color = attributes[3].trim();
+                    String breed = attributes[4].trim();
+                    String accessory = attributes[5].trim();
     
                     // Create a new Horse object with the read attributes
                     Horse horse = new Horse(symbol, name, confidence);
+                    horse.setColor(color);
+                    horse.setBreed(breed);
+                    horse.setAccessory(accessory);
     
                     // Add the horse to the race in the current lane and then increment the lane number
                     this.addHorse(horse, laneNumber);
-                    laneNumber = (laneNumber % 3) + 1; // Cycle through lanes 1, 2, 3
+                    laneNumber = (laneNumber % 3) + 1;  // Cycle through lanes 1, 2, 3
                 }
             }
         } catch (IOException e) {
@@ -112,10 +122,29 @@ public class Race {
                     e.printStackTrace();
                 }
             }
+            updateHorsesInFile(System.getProperty("user.dir") + File.separator + "horseAttribute.txt");
+            raceResults();
         }).start();
     }
 
-   
+    public void updateHorsesInFile(String filePath) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+            // Write each horse's details back to the file
+            writeHorseToFile(writer, lane1Horse);
+            writeHorseToFile(writer, lane2Horse);
+            writeHorseToFile(writer, lane3Horse);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to update horses in file.");
+        }
+    }
+    
+    private void writeHorseToFile(PrintWriter writer, Horse horse) {
+        if (horse != null) {
+            // Include all attributes of the horse in the output to the file.
+            writer.println(horse.getSymbol() + "," + horse.getName() + "," + horse.getConfidence() + "," + horse.getColor() + "," + horse.getBreed() + "," + horse.getAccessory());
+        }
+    }
 
     private void moveHorse(Horse theHorse) {
         if (!theHorse.hasFallen() && Math.random() < theHorse.getConfidence()) {
@@ -126,6 +155,7 @@ public class Race {
         if (Math.random() < fallProbability) {
             theHorse.fall();
             theHorse.decreaseConfidence();
+            theHorse.increaseFalls();
         }
 
         updateRaceDisplay();
@@ -154,16 +184,20 @@ public class Race {
             if (lane1Won) {
                 lane1Horse.increaseConfidence();
                 winnerMessage = lane1Horse.getName() + " has won the race!\n";
+                lane1Horse.increaseWins();
             } else if (lane2Won) {
                 lane2Horse.increaseConfidence();
                 winnerMessage = lane2Horse.getName() + " has won the race!\n";
+                lane2Horse.increaseWins();
             } else if (lane3Won) {
                 lane3Horse.increaseConfidence();
                 winnerMessage = lane3Horse.getName() + " has won the race!\n";
+                lane3Horse.increaseWins();
             }
             updateListener.updateDisplay(winnerMessage);
             finished = true;
             finalMessageSet = true;
+
         }
     }
 
@@ -178,6 +212,37 @@ public class Race {
             finished = true;
         }
     }
+
+    public void raceResults() {
+        String filePath = System.getProperty("user.dir") + File.separator + "raceResults.txt";
+        System.out.println("Writing to: " + filePath);  // Debugging output
+        try (PrintWriter out = new PrintWriter(new FileWriter(filePath, true))) {
+            raceCount++;
+            String winnerInfo = getWinnerInfo();
+            if (!winnerInfo.isEmpty()) {
+                out.println("Race " + raceCount + ": " + winnerInfo);
+                System.out.println("Race result written: " + winnerInfo);  // Debugging output
+            } else {
+                System.out.println("No winner info available.");  // Debugging output
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing to race results file.");
+            e.printStackTrace();
+        }
+    }
+
+    private String getWinnerInfo() {
+        Horse winner = null;
+        if (raceWonBy(lane1Horse)) winner = lane1Horse;
+        else if (raceWonBy(lane2Horse)) winner = lane2Horse;
+        else if (raceWonBy(lane3Horse)) winner = lane3Horse;
+
+        if (winner != null) {
+            return winner.getName() + " - Total Wins: " + winner.getTotalWins() + ", Total Falls: " + winner.getTotalFalls() + ", Current Confidence: " + winner.getConfidence();
+        }
+        return "";
+    }
+
 
     public boolean isFinished() {
         return finished;

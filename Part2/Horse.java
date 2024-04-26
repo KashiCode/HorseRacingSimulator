@@ -18,7 +18,10 @@ public class Horse
     private boolean hasFallen;
     private String breed;
     private String color;
-    private String accessory;   
+    private String accessory; 
+    private int totalWins = 0;
+    private int totalFalls = 0;
+  
     
     //Constructor of class Horse
     /**
@@ -64,6 +67,22 @@ public class Horse
 
     public void setAccessory(String accessory) {
         this.accessory = accessory;
+    }
+
+    public void increaseWins() {
+        totalWins++;
+    }
+
+    public void increaseFalls() {
+        totalFalls++;
+    }
+
+    public int getTotalWins() {
+        return totalWins;
+    }
+
+    public int getTotalFalls() {
+        return totalFalls;
     }
 
 
