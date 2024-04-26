@@ -3,12 +3,6 @@ package Part2;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.*;
 
 
@@ -81,7 +75,7 @@ public class CustomiseHorse extends JDialog {
         }
 
         try (
-            FileWriter fw = new FileWriter("I:\\TES\\HorseRace Starter\\horseAttribute.txt", true);
+            FileWriter fw = new FileWriter(System.getProperty("user.dir") + File.separator + "horseAttribute.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw)
         ) {
@@ -118,7 +112,7 @@ public class CustomiseHorse extends JDialog {
 
     private boolean checkExistingHorses() {
         int count = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader("I:\\TES\\HorseRace Starter\\horseAttribute.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + File.separator + "horseAttribute.txt"))) {
             while (reader.readLine() != null && count < 3) {
                 count++;
             }
@@ -136,7 +130,7 @@ public class CustomiseHorse extends JDialog {
 
         if (dialogResult == JOptionPane.YES_OPTION) {
             // Erase the horse details from the file
-            try (PrintWriter writer = new PrintWriter("I:\\TES\\HorseRace Starter\\horseAttribute.txt")) {
+            try (PrintWriter writer = new PrintWriter(System.getProperty("user.dir") + File.separator + "horseAttribute.txt")) {
                 // Just opening the file with a PrintWriter will erase its contents
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();

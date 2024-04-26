@@ -1,0 +1,3 @@
+A,Horse1,0.5,Black,Thoroughbred,Girth
+B,Horse2,0.8,Black,Thoroughbred,Bridle
+C,Horse3,0.3,Black,Paint,Blinkers

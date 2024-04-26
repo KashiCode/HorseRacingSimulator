@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+//EDIT FILE PATHS. 
+
 public class Statistics extends JFrame {
     public Statistics() {
         setTitle("Horse Statistics");
@@ -36,6 +38,9 @@ public class Statistics extends JFrame {
     }
 
     private void loadHorseAttributes(JTextArea textArea) {
+
+
+
         String filePath = "I:\\TES\\HorseRace Starter\\horseAttribute.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -55,6 +60,8 @@ public class Statistics extends JFrame {
     }
 
     private void loadRaceResults(JTextArea textArea) {
+
+
         String filePath = "I:\\TES\\HorseRace Starter\\raceResults.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
