@@ -16,7 +16,7 @@ public class CustomiseHorse extends JDialog {
     //private final int HORSE_FIELDS = 6; 
 
     public CustomiseHorse(JFrame parent) {
-        super(parent, "Create Horses", true);
+        super(parent, "Customise Horse Details", true);
         setSize(600, 800);
         setLayout(new GridLayout(0, 1)); 
         setLocationRelativeTo(parent);
@@ -100,7 +100,7 @@ public class CustomiseHorse extends JDialog {
                 String accessories = (String)((JComboBox)horseComponents[13]).getSelectedItem();
                 
                 // Validate input before writing to file
-                if (!name.isEmpty() && !symbol.isEmpty() && confidence >= 0.35 && confidence <= 0.65) {   // line that MIGHT be causing issues with confidence readings into system. Recheck this line.
+                if (!name.isEmpty() && !symbol.isEmpty()) {   
                     out.println(name + "," + symbol + "," + confidence + "," + color + "," + breed + "," + accessories);
                 } else {
                     // Handle invalid input appropriately
