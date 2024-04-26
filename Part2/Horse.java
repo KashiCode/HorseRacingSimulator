@@ -37,50 +37,63 @@ public class Horse
     }
     
     
-    //Methods of class Horse
+    //Methods of class Horse.
 
+
+    // Accessor method: returns the value of the horse breed field.
     public String getBreed() {
         return breed;
     }
+    
+    // mutator method: resets the horse for another race. 
+    public void resetHorse() {
+        DistanceTravelled = 0;
+        hasFallen = false;
+     }
 
-        // Resets the horse's state for a new race
-        public void resetHorse() {
-            DistanceTravelled = 0;
-            hasFallen = false;
-        }
-
+    //Mutator method: sets the horse breed to a new value.
     public void setBreed(String breed) {
         this.breed = breed;
     }
 
+    // Accessor method: returns the value of the horse color field.
     public String getColor() {
         return color;
     }
 
+
+    //Mutator method: sets the horse color to a new value.
     public void setColor(String color) {
         this.color = color;
     }
 
+    // Accessor method: returns the value of the horse accessory field.
     public String getAccessory() {
         return accessory;
     }
 
+
+    //Mutator method: sets the horse accesory to a new value. 
     public void setAccessory(String accessory) {
         this.accessory = accessory;
     }
 
+    // Mutator method: Increases the total wins of a Horse.
     public void increaseWins() {
         totalWins++;
     }
 
+    // Mutator method: Increases the total falls of a Horse. 
     public void increaseFalls() {
         totalFalls++;
     }
 
+    // Accessor method: returns the value of the total wins field.
     public int getTotalWins() {
         return totalWins;
     }
 
+    // Accessor method: returns the value of the total falls field.
     public int getTotalFalls() {
         return totalFalls;
     }

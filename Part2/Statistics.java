@@ -7,25 +7,30 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-//EDIT FILE PATHS. 
 
+/**
+ * The Class Statistics creates a text area that displays both the Horse Attributes and the previous Race results. 
+ * 
+ * @author Maks Ostrynski
+ * @version 1  26/04/2024
+ */
 public class Statistics extends JFrame {
     public Statistics() {
         setTitle("Horse Statistics");
-        setSize(600, 400); // Adjust size to accommodate more data
+        setSize(600, 400); 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        getContentPane().setBackground(new Color(233, 233, 233)); // Set a light grey background
+        getContentPane().setBackground(new Color(233, 233, 233)); 
 
         JTextArea statsTextArea = new JTextArea();
         statsTextArea.setEditable(false);
-        statsTextArea.setFont(new Font("Consolas", Font.PLAIN, 12)); // Set a monospaced font for better alignment
+        statsTextArea.setFont(new Font("Consolas", Font.PLAIN, 12)); 
 
         loadHorseAttributes(statsTextArea);
         loadRaceResults(statsTextArea);
 
         JScrollPane scrollPane = new JScrollPane(statsTextArea);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding around the text area
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
         add(scrollPane);
 
         setVisible(true);
@@ -38,9 +43,8 @@ public class Statistics extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    //Loads the Horse Attributes from the horseAttributes File. 
     private void loadHorseAttributes(JTextArea textArea) {
-
-
 
         String filePath = System.getProperty("user.dir") + File.separator + "horseAttribute.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -60,11 +64,14 @@ public class Statistics extends JFrame {
         }
     }
 
+    //Loads the Horse Race Results from the raceResults File. 
     private void loadRaceResults(JTextArea textArea) {
         String filePath = System.getProperty("user.dir") + File.separator + "raceResults.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             textArea.append("Race Results:\n");
+            textArea.append("Race | Name | Total Win | Total Fall | Confidence\n");
+            textArea.append("-----------------------------------------------------------------\n");
             while ((line = reader.readLine()) != null) {
                 textArea.append(line + "\n");
             }

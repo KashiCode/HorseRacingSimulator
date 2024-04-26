@@ -6,6 +6,17 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
+
+
+
+/**
+ * The Class MainMenu creates the main entry point for the Horse Racing simulator. 
+ * The Class contains buttons linking to the Horse Customisation, Statistics and Tutorial windows.
+ * The Class also ensures that the Horse Files are created correctly. 
+ * 
+ * @author Maks Ostrynski
+ * @version 1  24/04/2024
+ */
 public class MainMenu extends JFrame {
     public MainMenu() {
         setTitle("Main Menu");
@@ -31,20 +42,20 @@ public class MainMenu extends JFrame {
         buttonPanel.add(tutorialButton);
         buttonPanel.add(exitButton);
 
-        // Opens the tutorial window.
+
+        //Button logic that links to the Tutorial window. 
         tutorialButton.addActionListener(e -> {
             Tutorial tutorialWindow = new Tutorial(); 
             tutorialWindow.setVisible(true);
         });
 
-        // Opens the Statistics Window. 
+        //Button logic that links to the statistics window. 
         statsButton.addActionListener(e -> {
             Statistics StatisticsWindow = new Statistics(); 
             StatisticsWindow.setVisible(true);
         });
 
-
-        // Opens the Horse Customisation window
+        //Button logic that links to the customisation Window. 
         customizeButton.addActionListener(e -> {
             if (CreateFiles()) {
                 JOptionPane.showMessageDialog(this, "Files integrity evaluated sucessfully."); //redit
@@ -55,7 +66,7 @@ public class MainMenu extends JFrame {
             }
         });
 
-        // Exits the program.
+        //Button Logic to exit the program. 
         exitButton.addActionListener(e -> System.exit(0));
 
         setSize(800, 400);
@@ -63,6 +74,12 @@ public class MainMenu extends JFrame {
         setVisible(true);
     }
 
+
+    /***
+     * Method to Style and create the buttons on the Main menu.
+     * Adds a hover effect to the buttons. 
+     * 
+     */
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -88,6 +105,11 @@ public class MainMenu extends JFrame {
         return button;
     }
 
+    /***
+     * Method to create the horseAttribute and raceResults files. 
+     * Ensures that they have been created in the Users local directory. 
+     * 
+     */
     private boolean CreateFiles() {
         
         //Old Directory Path. 
@@ -103,7 +125,6 @@ public class MainMenu extends JFrame {
             boolean horseFileCreated = horseFile.createNewFile();
             boolean raceFileCreated = raceFile.createNewFile();
             
-            // Check if both files exist or were created successfully.
             return (horseFileCreated || horseFile.exists()) && (raceFileCreated || raceFile.exists());
         } catch (IOException e) {
             e.printStackTrace();

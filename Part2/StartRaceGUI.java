@@ -5,36 +5,45 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+
+
+/**
+ * The Class StartRaceGUI contains the visual components for displaying the racing of Horses in the Horse Racing Simulator. 
+ * The Class ensures that the Horse Attributes are retrieved and passed correctly to the Race class. 
+ * The Class ensures the race displays properly for the user. 
+ * 
+ * @author Maks Ostrynski
+ * @version 2  26/04/2024
+ */
 public class StartRaceGUI extends JFrame {
     private JTextArea raceDisplay;
     private JButton startButton, resetButton, statsButton, customButton, bettingButton, exitButton;
-    private JSpinner distanceSpinner; // Spinner for track distance
+    private JSpinner distanceSpinner; 
     private Race race;
 
+
+    //Sets the visual layout of the Horse Racing simulator screen. 
     public StartRaceGUI() {
-        // Setup the main frame
         setTitle("Horse Race");
         setSize(800, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Setup track distance panel
+   
         JPanel distancePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         distancePanel.add(new JLabel("Track Distance:"));
         distanceSpinner = new JSpinner(new SpinnerNumberModel(50, 20, 100, 1));
         distancePanel.add(distanceSpinner);
-        add(distancePanel, BorderLayout.NORTH); // Add the panel to the top of the frame
+        add(distancePanel, BorderLayout.NORTH); 
 
-        // Setup buttons panel
         JPanel buttonPanel = new JPanel();
         startButton = new JButton("Start Race");
-        resetButton = new JButton("Reset");
+        resetButton = new JButton("Reset Race");
         statsButton = new JButton("Statistics");
-        customButton = new JButton("Customizations");
+        customButton = new JButton("Edit Horses");
         bettingButton = new JButton("Virtual Betting");
         exitButton = new JButton("Exit");
 
-        // Action listeners for buttons
         startButton.addActionListener(this::startRace);
         resetButton.addActionListener(e -> resetRace());
         statsButton.addActionListener(e -> showStatistics());
@@ -42,7 +51,6 @@ public class StartRaceGUI extends JFrame {
         bettingButton.addActionListener(e -> virtualBetting());
         exitButton.addActionListener(e -> System.exit(0));
 
-        // Add buttons to the panel
         buttonPanel.add(startButton);
         buttonPanel.add(resetButton);
         buttonPanel.add(statsButton);
@@ -51,7 +59,6 @@ public class StartRaceGUI extends JFrame {
         buttonPanel.add(exitButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Setup the race display area
         raceDisplay = new JTextArea();
         raceDisplay.setFont(new Font("Monospaced", Font.PLAIN, 12));
         raceDisplay.setEditable(false);
@@ -61,59 +68,66 @@ public class StartRaceGUI extends JFrame {
         
     }
 
+      /** 
+     * The logic for the start Race Button. 
+     * The method sets the track distance and contains an event listners for appending the race information frame by frame. 
+     * Passes the Attribute file to the Race Class. 
+     */
     private void startRace(ActionEvent e) {
         int trackDistance = (Integer) distanceSpinner.getValue();
     
-        // Initialize the race with the track distance
         race = new Race(trackDistance);
         
-        // Set the update listener for race updates
         race.setUpdateListener(new RaceUpdateListener() {
             @Override
             public void updateDisplay(String text) {
                 SwingUtilities.invokeLater(() -> {
                     if (!race.isFinished()) {
-                        // Refresh the display with the new frame
                         raceDisplay.setText(text);
                     } else {
-                        // Append the final message without clearing
                         raceDisplay.append(text + "\n");
                     }
                 });
             }
         });
     
-        // You may want to load horses from a file or add them manually
-        // Uncomment the following line if you wish to load horses from a file
         race.loadHorsesFromFile(System.getProperty("user.dir") + File.separator + "horseAttribute.txt");
 
-    
-        // Manually add horses to the race for testing
         //race.addHorse(new Horse('A', "Lightning", 0.7), 1);
         //race.addHorse(new Horse('B', "Thunder", 0.7), 2);
         //race.addHorse(new Horse('C', "Storm", 0.8), 3);
-    
-        // Disable the start button to prevent race restarts while running
+
         startButton.setEnabled(false);
-    
-        // Start the race in a separate thread to keep the GUI responsive
+ 
         new Thread(race::startRace).start();
     }
 
 
-
-    // Placeholder methods for button actions
+      /** 
+     * The logic for the Reset Button.
+     * Renables the Race Button and clears the GUI screen. 
+     * Resets the race. 
+     */ 
     private void resetRace() {
-        race.resetRace(); // Reset the race state
-        startButton.setEnabled(true); // Enable the start button again
-        raceDisplay.setText(""); // Clear the race display
+        race.resetRace(); 
+        startButton.setEnabled(true); 
+        raceDisplay.setText(""); 
     }
 
+
+      /** 
+     * The logic for the Statistics Button.
+     * Opens the Statistics Window.
+     */
     private void showStatistics() {
             Statistics StatisticsWindow = new Statistics(); 
             StatisticsWindow.setVisible(true);
     }
 
+      /** 
+     * The logic for the Customise Button.
+     * Opens the Customise Horse Window.
+     */
     private void openCustomizations() {
         CustomiseHorse CustomiseHorseWindow = new CustomiseHorse(this); 
         CustomiseHorseWindow.setVisible(true);
@@ -121,6 +135,8 @@ public class StartRaceGUI extends JFrame {
     }
    
 
+  
+    //Logic for virtual Betting Button. 
     private void virtualBetting() {
         JOptionPane.showMessageDialog(this, "Not Implemented Yet.");
     }

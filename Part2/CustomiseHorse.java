@@ -5,7 +5,16 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
-
+/**
+ * The Class CustomiseHorse creates three indiviual horse panels that allow users to enter the confidence,name,symbol,accesories,breed and color of each Horse. 
+ * The Class ensures that the Horse Attributes are saved correctly to the horse attribute file. 
+ * Ensures that the user can reset the contents of the Horse File if he wants to add new horses. 
+ * Error checking to ensure users cant progress to the Race without three Horses. 
+ * 
+ * 
+ * @author Maks Ostrynski
+ * @version 1  26/04/2024
+ */
 public class CustomiseHorse extends JDialog {
     //private final int HORSE_FIELDS = 6; 
 
@@ -19,7 +28,7 @@ public class CustomiseHorse extends JDialog {
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         
         for (int i = 1; i <= 3; i++) {
-            JPanel horsePanel = new JPanel(new GridLayout(0, 2)); // Use GridLayout for label-input pairs
+            JPanel horsePanel = new JPanel(new GridLayout(0, 2)); 
             addHorseComponents(horsePanel, "Horse " + i);
             contentPanel.add(horsePanel);
         }
@@ -50,9 +59,13 @@ public class CustomiseHorse extends JDialog {
         setVisible(true);
     }
 
+    /***
+     * Method to add horses fields to the panel so users can enter information into them. 
+     * 
+     */ 
     private void addHorseComponents(JPanel panel, String title) {
         panel.add(new JLabel(title));
-        panel.add(new JLabel()); // Empty placeholder for alignment
+        panel.add(new JLabel()); 
         panel.add(new JLabel("Symbol:"));
         panel.add(new JTextField());
         panel.add(new JLabel("Name:"));
@@ -67,6 +80,10 @@ public class CustomiseHorse extends JDialog {
         panel.add(new JComboBox<>(new String[]{"None", "Stirrups", "Girth", "Bridle", "Blinkers", "Saddle"}));
     }
 
+    /***
+     * Method to Write the entered Horse details to the attribute file.
+     * 
+     */
     private void writeHorseDetails(ActionEvent e) {
 
         if (checkExistingHorses()) {
@@ -80,7 +97,6 @@ public class CustomiseHorse extends JDialog {
             PrintWriter out = new PrintWriter(bw)
         ) {
             Component[] components = getContentPane().getComponents();
-            // Obtain the horse panels from the content panel
             JPanel contentPanel = (JPanel) ((JViewport) ((JScrollPane) components[0]).getComponent(0)).getView();
             for (int i = 0; i < contentPanel.getComponentCount() - 1; i++) {
                 JPanel horsePanel = (JPanel) contentPanel.getComponent(i);
@@ -93,13 +109,11 @@ public class CustomiseHorse extends JDialog {
                 String breed = (String)((JComboBox)horseComponents[11]).getSelectedItem();
                 String accessories = (String)((JComboBox)horseComponents[13]).getSelectedItem();
                 
-                // Validate input before writing to file
                 if (!name.isEmpty() && !symbol.isEmpty()) {   
                     out.println(name + "," + symbol + "," + confidence + "," + color + "," + breed + "," + accessories);
                 } else {
-                    // Handle invalid input appropriately
                     JOptionPane.showMessageDialog(this, "Please fill all fields with valid information for each horse.");
-                    return; // Stop the process if there is invalid input
+                    return; 
                 }
             }
             JOptionPane.showMessageDialog(this, "Horses created successfully!");
@@ -107,9 +121,14 @@ public class CustomiseHorse extends JDialog {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Failed to create horses.");
         }
-        dispose(); // Close the dialog after saving the data
+        dispose(); 
     }
 
+    /***
+     * Method to check if the File contains Horses already when pressing the continue button. 
+     * Ensures users cant skip customisation.  
+     * 
+     */
     private boolean checkExistingHorses() {
         int count = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + File.separator + "horseAttribute.txt"))) {
@@ -122,6 +141,10 @@ public class CustomiseHorse extends JDialog {
         return count >= 3;
     }
 
+    /***
+     * Resets the contents of the Horse Attribute File. 
+     * 
+     */
     private void resetHorseDetails(ActionEvent e) {
         int dialogResult = JOptionPane.showConfirmDialog(this,
                 "Are you sure you want to erase all horse details?",
@@ -129,9 +152,7 @@ public class CustomiseHorse extends JDialog {
                 JOptionPane.YES_NO_OPTION);
 
         if (dialogResult == JOptionPane.YES_OPTION) {
-            // Erase the horse details from the file
             try (PrintWriter writer = new PrintWriter(System.getProperty("user.dir") + File.separator + "horseAttribute.txt")) {
-                // Just opening the file with a PrintWriter will erase its contents
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Failed to reset horses.");
@@ -139,13 +160,15 @@ public class CustomiseHorse extends JDialog {
         }
     }
 
+    /***
+     * Method to Open the Customisation page. 
+     * Checks if horses have been added before opening. 
+     * 
+     */
     private void openRaceCustomisationPage() {
-    // Check if the horse file contains entries before opening the race customisation page
     if (!checkExistingHorses()) {
-        // Display message if no horses are found
         JOptionPane.showMessageDialog(this, "No horses added. Please add horses first.");
     } else {
-        // Dispose the current dialog and open the new frame
         this.dispose();      
         StartRaceGUI StartRaceGUIWindow = new StartRaceGUI(); 
         StartRaceGUIWindow.setVisible(true);

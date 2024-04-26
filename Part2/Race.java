@@ -12,8 +12,6 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 
-// Race.java
-
 /**
  * Interface for updating the race display in the GUI.
  */
@@ -21,6 +19,14 @@ interface RaceUpdateListener {
     void updateDisplay(String text);
 }
 
+
+/**
+ * The Class Race Handles the logic behind the Horse Racing Simulator. 
+ * The Class handles the movement, winning, Falling, updating the GUI and manipulating Horse statistics. 
+ * 
+ * @author Maks Ostrynski
+ * @version 2  24/04/2024
+ */
 public class Race {
     private int raceLength;
     private Horse lane1Horse;
@@ -32,6 +38,7 @@ public class Race {
     private volatile boolean finished = false;
     private int raceCount = 0;
 
+
     public Race(int distance) {
         raceLength = distance;
         finished = false;
@@ -42,13 +49,18 @@ public class Race {
         this.updateListener = listener;
     }
 
+     /**
+     * Loads horses from a file and adds them to the Race to run. 
+     * 
+     * @param filePath the File path where the Horse Information is stored. 
+     */
     public void loadHorsesFromFile(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             int laneNumber = 1;  // Start with lane 1
             while ((line = br.readLine()) != null) {
                 String[] attributes = line.split(",");
-                if (attributes.length == 6) {  // Ensure there are six attributes: symbol, name, confidence, color, breed, accessory
+                if (attributes.length == 6) {  
                     char symbol = attributes[0].trim().charAt(0);
                     String name = attributes[1].trim();
                     double confidence = Double.parseDouble(attributes[2].trim());
@@ -56,15 +68,13 @@ public class Race {
                     String breed = attributes[4].trim();
                     String accessory = attributes[5].trim();
     
-                    // Create a new Horse object with the read attributes
                     Horse horse = new Horse(symbol, name, confidence);
                     horse.setColor(color);
                     horse.setBreed(breed);
                     horse.setAccessory(accessory);
     
-                    // Add the horse to the race in the current lane and then increment the lane number
                     this.addHorse(horse, laneNumber);
-                    laneNumber = (laneNumber % 3) + 1;  // Cycle through lanes 1, 2, 3
+                    laneNumber = (laneNumber % 3) + 1; 
                 }
             }
         } catch (IOException e) {
@@ -73,6 +83,14 @@ public class Race {
         }
     }
 
+     /**
+     * Adds a horse to the race in a given lane
+     * Checks that the lane is valid (1, 2 or 3).
+     * Checks that the attributes of horse are not NULL. 
+     * 
+     * @param theHorse the horse to be added to the race
+     * @param laneNumber the lane that the horse will be added to
+     */
     public void addHorse(Horse theHorse, int laneNumber) {
         if (theHorse == null) {
             System.out.println("NULL VALUE FOUND IN HORSE CANNOT ADD");
@@ -94,6 +112,14 @@ public class Race {
         }
     }
 
+
+     /**
+     * Start the race
+     * The horse are brought to the start and then repeatedly moved forward until the race is finished.
+     * Calls the Announce Winner method, CheckFallenHorses method and updateRaceDisplay method.
+     * Calls the method to Update the Horse information in the file and Update the Race results. 
+     * 
+     */
     public void startRace() {
         finished = false;
         if (lane1Horse != null) lane1Horse.goBackToStart();
@@ -127,9 +153,12 @@ public class Race {
         }).start();
     }
 
+     /**
+     * Updates the Horses information from the file.
+     * Allows changing the confidence after a race. 
+     */
     public void updateHorsesInFile(String filePath) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
-            // Write each horse's details back to the file
             writeHorseToFile(writer, lane1Horse);
             writeHorseToFile(writer, lane2Horse);
             writeHorseToFile(writer, lane3Horse);
@@ -141,11 +170,17 @@ public class Race {
     
     private void writeHorseToFile(PrintWriter writer, Horse horse) {
         if (horse != null) {
-            // Include all attributes of the horse in the output to the file.
             writer.println(horse.getSymbol() + "," + horse.getName() + "," + horse.getConfidence() + "," + horse.getColor() + "," + horse.getBreed() + "," + horse.getAccessory());
         }
     }
 
+    /**
+     * Logic Behind moving a Horse. 
+     * Ensures that the Horse has not fallen and then moves the horse. 
+     * Calculates the probability of the Horse Falling. 
+     * 
+     * @param theHorse the horse to be added to the race
+     */
     private void moveHorse(Horse theHorse) {
         if (!theHorse.hasFallen() && Math.random() < theHorse.getConfidence()) {
             theHorse.moveForward();
@@ -161,6 +196,11 @@ public class Race {
         updateRaceDisplay();
     }
 
+    /**
+     * Announces the Winner of the Race or a Draw. 
+     * Updates the GUI with a Winning message or draw message.
+     * 
+     */
     private void AnnounceWinner() {
         boolean lane1Won = raceWonBy(lane1Horse);
         boolean lane2Won = raceWonBy(lane2Horse);
@@ -201,6 +241,12 @@ public class Race {
         }
     }
 
+
+    /**
+     * Checks if all three horses have fallen and announces that there are no winners.
+     * If all horses have fallen, then it ends the programs runtime. 
+     *
+     */
     private void CheckFallenHorses() {
         if ((lane1Horse != null && lane1Horse.hasFallen()) &&
             (lane2Horse != null && lane2Horse.hasFallen()) &&
@@ -213,17 +259,22 @@ public class Race {
         }
     }
 
+
+    /**
+     * Writes the results of the race to a file. 
+     * 
+     */
     public void raceResults() {
         String filePath = System.getProperty("user.dir") + File.separator + "raceResults.txt";
-        System.out.println("Writing to: " + filePath);  // Debugging output
+        System.out.println("Writing to: " + filePath); 
         try (PrintWriter out = new PrintWriter(new FileWriter(filePath, true))) {
             raceCount++;
             String winnerInfo = getWinnerInfo();
             if (!winnerInfo.isEmpty()) {
                 out.println("Race " + raceCount + ": " + winnerInfo);
-                System.out.println("Race result written: " + winnerInfo);  // Debugging output
+                System.out.println("Race result written: " + winnerInfo);  
             } else {
-                System.out.println("No winner info available.");  // Debugging output
+                System.out.println("No winner info available."); 
             }
         } catch (IOException e) {
             System.out.println("Error writing to race results file.");
@@ -248,13 +299,24 @@ public class Race {
         return finished;
     }
 
+         
+    /** 
+     * Determines if a horse has won the race
+     *
+     * @param theHorse The horse we are testing
+     * @return true if the horse has won, false otherwise.
+     */
     private boolean raceWonBy(Horse theHorse) {
         return theHorse != null && theHorse.getDistanceTravelled() >= raceLength;
     }
 
+
+     /***
+     * Prints the race on the GUI through a creating a string representation of the race.
+     * Sends to the updateListener to update the GUI.
+     */
     private void printRace() {
         if (finalMessageSet) {
-            // Do not print the race status; the final message is already displayed.
             return;
         }
         
@@ -265,13 +327,17 @@ public class Race {
         sb.append(printLane(lane3Horse)).append("\n");
         sb.append(multiplePrint('=', raceLength + 3)).append("\n");
     
-        // Update the display with the new frame
         if (updateListener != null) {
             updateListener.updateDisplay(sb.toString());
         }
     }
     
 
+    /**
+     * Constructs a string representation of each Horses Lane. 
+     * @param theHorse the horse to be added
+     * 
+     */
     private String printLane(Horse theHorse) {
         StringBuilder sb = new StringBuilder();
         int spacesBefore = theHorse.getDistanceTravelled();
@@ -293,6 +359,13 @@ public class Race {
         return sb.toString();
     }
     
+
+    /***
+     * The method constructs a String by repeating a character a specified number of times. 
+     * 
+     * @param aChar the character to be repeated.
+     * @param times the number of times the character is repeated.
+     */
     private String multiplePrint(char aChar, int times) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < times; i++) {
@@ -301,19 +374,21 @@ public class Race {
         return sb.toString();
     }
 
+
+    /***
+     * Method to Reset the Horse Race. 
+     * 
+     */
     public void resetRace() {
-        // Reset race-specific flags
         finished = false;
         finalMessageSet = false;
     
-        // Reset the state of each horse
         if (lane1Horse != null) lane1Horse.resetHorse();
         if (lane2Horse != null) lane2Horse.resetHorse();
         if (lane3Horse != null) lane3Horse.resetHorse();
     }
 
     private void updateRaceDisplay() {
-        // Invoke printRace only if the race is ongoing
         if (!finalMessageSet) {
             SwingUtilities.invokeLater(this::printRace);
         }
