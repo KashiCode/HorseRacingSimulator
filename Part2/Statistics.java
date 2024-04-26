@@ -3,6 +3,7 @@ package Part2;
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -41,7 +42,7 @@ public class Statistics extends JFrame {
 
 
 
-        String filePath = "I:\\TES\\HorseRace Starter\\horseAttribute.txt";
+        String filePath = System.getProperty("user.dir") + File.separator + "horseAttribute.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             textArea.append("Horse Attributes:\n");
@@ -62,7 +63,7 @@ public class Statistics extends JFrame {
     private void loadRaceResults(JTextArea textArea) {
 
 
-        String filePath = "I:\\TES\\HorseRace Starter\\raceResults.txt";
+        String filePath = System.getProperty("user.dir") + File.separator + "raceResults.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             textArea.append("Race Results:\n");

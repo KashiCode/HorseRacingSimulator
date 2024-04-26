@@ -3,6 +3,7 @@ package Part2;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 public class StartRaceGUI extends JFrame {
     private JTextArea raceDisplay;
@@ -84,7 +85,8 @@ public class StartRaceGUI extends JFrame {
     
         // You may want to load horses from a file or add them manually
         // Uncomment the following line if you wish to load horses from a file
-        race.loadHorsesFromFile("I:\\TES\\HorseRace Starter\\horseAttribute.txt");
+        race.loadHorsesFromFile(System.getProperty("user.dir") + File.separator + "horseAttribute.txt");
+
     
         // Manually add horses to the race for testing
         //race.addHorse(new Horse('A', "Lightning", 0.7), 1);
