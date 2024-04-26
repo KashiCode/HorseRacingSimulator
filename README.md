@@ -4,11 +4,10 @@
 
 The Horse Racing Simulator, created using [Java](https://www.java.com/download/ie_manual.jsp) and Java Swing is a visual application designed to allow users to simulate races and customise Horses. This application was designed as a university project to enhance my knowledge of graphical user interfaces and object oriented programming. 
 
-## Program Description
-
-
-
 ![HorseRace](https://i.imgur.com/7SLC05o.png)
+
+
+# ⚙ Program Description
 
 
 
