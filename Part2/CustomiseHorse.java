@@ -17,7 +17,7 @@ public class CustomiseHorse extends JDialog {
 
     public CustomiseHorse(JFrame parent) {
         super(parent, "Create Horses", true);
-        setSize(500, 800);
+        setSize(600, 800);
         setLayout(new GridLayout(0, 1)); 
         setLocationRelativeTo(parent);
 
@@ -33,16 +33,16 @@ public class CustomiseHorse extends JDialog {
         JScrollPane scrollPane = new JScrollPane(contentPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         add(scrollPane, BorderLayout.CENTER);
 
-        JButton createButton = new JButton("Create Horses");
+        JButton createButton = new JButton("Add Horse Details");
         createButton.addActionListener(this::writeHorseDetails);
 
-        JButton resetButton = new JButton("Reset Horses");
+        JButton resetButton = new JButton("Reset Horse Details");
         resetButton.addActionListener(this::resetHorseDetails);
 
         JButton exitButton = new JButton("Exit");
         exitButton.addActionListener(e -> System.exit(0));
 
-        JButton continueButton = new JButton("Continue");
+        JButton continueButton = new JButton("Continue to Race");
         continueButton.addActionListener(e -> openRaceCustomisationPage());
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -66,11 +66,11 @@ public class CustomiseHorse extends JDialog {
         panel.add(new JLabel("Confidence:"));
         panel.add(new JSpinner(new SpinnerNumberModel(0.5, 0.1, 0.9, 0.01)));
         panel.add(new JLabel("Color:"));
-        panel.add(new JComboBox<>(new String[]{"Black", "White", "Brown", "Gray", "Red", "Green", "Blue", "Yellow", "Purple", "Orange", "Pink", "Cyan", "Silver", "Gold"}));
+        panel.add(new JComboBox<>(new String[]{"Black", "Bay", "Chestnut", "Gray"}));
         panel.add(new JLabel("Breed:"));
-        panel.add(new JComboBox<>(new String[]{"Bojack", "Arabian", "Thoroughbred", "Quarter Horse", "Appaloosa", "Connemara Pony", "Akhal-Teke", "Gypsy Vanner", "Mule"}));
+        panel.add(new JComboBox<>(new String[]{"Thoroughbred", "Quarter Horse", "Arabian", "Appaloosa", "Paint"}));
         panel.add(new JLabel("Accessories:"));
-        panel.add(new JComboBox<>(new String[]{"No Accessory", "Racing Saddle", "Lucky Horseshoe", "Golden Hooves", "Enchanted Saddle", "Pegasis Wings", "Enhanced Blinders"}));
+        panel.add(new JComboBox<>(new String[]{"None", "Stirrups", "Girth", "Bridle", "Blinkers", "Saddle"}));
     }
 
     private void writeHorseDetails(ActionEvent e) {
@@ -100,7 +100,7 @@ public class CustomiseHorse extends JDialog {
                 String accessories = (String)((JComboBox)horseComponents[13]).getSelectedItem();
                 
                 // Validate input before writing to file
-                if (!name.isEmpty() && !symbol.isEmpty() && confidence >= 0.35 && confidence <= 0.65) {
+                if (!name.isEmpty() && !symbol.isEmpty() && confidence >= 0.35 && confidence <= 0.65) {   // line that MIGHT be causing issues with confidence readings into system. Recheck this line.
                     out.println(name + "," + symbol + "," + confidence + "," + color + "," + breed + "," + accessories);
                 } else {
                     // Handle invalid input appropriately

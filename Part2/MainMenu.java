@@ -47,7 +47,7 @@ public class MainMenu extends JFrame {
         // Opens the Horse Customisation window
         customizeButton.addActionListener(e -> {
             if (CreateFiles()) {
-                JOptionPane.showMessageDialog(this, "Files checked and created successfully."); //redit
+                JOptionPane.showMessageDialog(this, "Files integrity evaluated sucessfully."); //redit
                 CustomiseHorse CustomiseHorseWindow = new CustomiseHorse(this); //link to CustomiseHorse.java
                 CustomiseHorseWindow.setVisible(true);
             } else {

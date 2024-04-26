@@ -120,7 +120,7 @@ public class StartRaceGUI extends JFrame {
    
 
     private void virtualBetting() {
-        // Logic for virtual betting
+        JOptionPane.showMessageDialog(this, "Not Implemented Yet.");
     }
 
     public static void main(String[] args) {
