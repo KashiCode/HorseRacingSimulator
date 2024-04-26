@@ -6,19 +6,22 @@ The Horse Racing Simulator, created using [Java](https://www.java.com/download/i
 
 ![HorseRace](https://i.imgur.com/7SLC05o.png)
 
-
 ## 📌 Program Description
 
+This program contains two folders; Part1 and Part2. The part1 folder contains a simple terminal text based interface for horse racing. Its meant to show the inital revision of my HorseRacingSimulator Before i adapted it to a fully functional graphical user interface. The part2 folder contains all of the files relating to the Graphical adaption of the HorseRacingSimulator. The program initialises at the MainMenu where users can pick to navigate to the tutorial page, statistics page or the horse customisation page. The tutorial page contains a step by step tutorial to navigating the program. The statistics menu displays the confidence value, name, symbol, accessory option, breed and color of each Horse added to the program. The horse customisation page contains three seperate panels containing the confidence value, name, symbol, accessory option, breed and color for each Horse for the user to add to the program before racing. The reset option works as a edit option and removes any prior horse information from the program. From the Horse customisation page, once all three Horses and their information have been added to the program the user can navigate to the Start Race Gui menu and begin racing with the horses. The confidence level of each Horse determines the likelihood for a Horse to either move forward or to fall over. The higher the confidence the more likely a Horse will fall over during a race and the more likely the horse will move forward. The opposite occurs for lower confidence values. When a Horse wins the race its confidence value is increased by 0.05 while if a Horse falls over its confidence value is decreased by 0.05. At the end of each Race the Results of the race are saved to the race results file and displayed for the user to see in the statistics menu. In the event of multiple winners a draw message is returned and in the event of no winners (all Horses falling) then a no winner message is displayed. From the racing menu users can choose to either navigate back to the horse customisation page and edit their horses , reset the race or view the statistics in the statistics menu. 
 
+The program contains several files:
 
-
-
-## Instructions 
-
-- Ensure your data is structured correctly for the app to interpret it. Refer to the "Example Files" folder in this GitHub repository for guidance.
-- The application only accepts CSV and Excel files.
-- Clean and pre-process your data before uploading it to the application.
-- Select the appropriate visualization or statistical feature based on your data and analysis needs.
+- `MainMenu.GUI` - Main entry point of the program containing the `tutorial button`, `horse customisation button` and `statistics button`.
+- `Horse.java` - Contains the Horse accessor/mutator methods.
+- `Race.java` - Contains the race logic such as moving the Horse , announcing winners or checking if a Horse has fallen. 
+- `StartRaceGUI.java` - Contains the GUI output for the Horse Race and buttons to navigate back to `Statistics` and `Horse Customisation`.
+- `Statistics.java` - Contains a page that displays all current Horses on the page and the results of each previous race. 
+- `Tutorial.java` - Contains a tutorial on how to use the program. 
+- `CustomiseHorse.java` - Contains options to reset Horse information and add Horses to the program.
+- `horseAttribute.txt` - Contains the Horse attributes such as confidence etc.
+- `raceResult.txt` - Contains the Race results.
+- `HorseRaceSim.bat` - Executable to run the program easier. 
 
 
 ## 📌 Installation
