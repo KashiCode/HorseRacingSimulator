@@ -8,10 +8,7 @@ The Horse Racing Simulator, created using [Java](https://www.java.com/download/i
 
 
 
-## 📌 Program Screenshots
-
-
-![HorseRace](https://i.imgur.com/CAdbLky.png)
+![HorseRace](https://i.imgur.com/7SLC05o.png)
 
 
 
