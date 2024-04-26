@@ -7,7 +7,7 @@ The Horse Racing Simulator, created using [Java](https://www.java.com/download/i
 ![HorseRace](https://i.imgur.com/7SLC05o.png)
 
 
-# ⚙ Program Description
+## 📌 Program Description
 
 
 
@@ -21,7 +21,7 @@ The Horse Racing Simulator, created using [Java](https://www.java.com/download/i
 - Select the appropriate visualization or statistical feature based on your data and analysis needs.
 
 
-# 📌 Installation
+## 📌 Installation
 
 ### 1. Installing the Java Development Kit
 
@@ -37,16 +37,16 @@ The Horse Racing Simulator, created using [Java](https://www.java.com/download/i
 
 - Navigate to the directory where you saved the zip file containing the codebase and run the `HorseRaceSim.bat` executable.
 
-# ⚙ Dependencies
+## ⚙ Dependencies
 - Java (At least JDK 17.0.8)
 
-# 📝 Contributing
+## 📝 Contributing
 Your contributions are always welcome. For major revisions, please start by opening an issue to discuss what you'd like to change.
 
-# 📜 License
+## 📜 License
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
-# 💼 Contact
+## 💼 Contact
 For any inquiries, suggestions, or feedback, don't hesitate to email me at [ostrynskimaks@gmail.com](mailto:ostrynskimaks@gmail.com).
 We encourage suggestions for improvements and new features!
 
