@@ -39,15 +39,7 @@ This application was designed as a university project to enhance my knowledge of
      ```
 
 # ⚙ Dependencies
-- Node.js (Version v18.18.2 or newer)
 - Java (At least JDK 17.0.8)
-- Axios
-- Discord.js
-- Dotenv
-- OpenAI
-
-
-
 
 
 # 📝 Contributing
