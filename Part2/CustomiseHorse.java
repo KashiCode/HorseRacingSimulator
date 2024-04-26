@@ -13,7 +13,7 @@ import java.io.*;
 
 
 public class CustomiseHorse extends JDialog {
-    private final int HORSE_FIELDS = 6; 
+    //private final int HORSE_FIELDS = 6; 
 
     public CustomiseHorse(JFrame parent) {
         super(parent, "Create Horses", true);
