@@ -12,7 +12,7 @@ This program contains two folders; Part1 and Part2. The part1 folder contains a 
 
 The program contains several files:
 
-- `MainMenu.java` - Main entry point of the program containing the `tutorial button`, `horse customisation button` and `statistics button`
+- `MainMenu.java` - Main entry point of the program containing the `tutorial button`, `horse customisation button` and `statistics button`.
 - `Horse.java` - Contains the Horse accessor/mutator methods.
 - `Race.java` - Contains the race logic such as moving the Horse , announcing winners or checking if a Horse has fallen. 
 - `StartRaceGUI.java` - Contains the GUI output for the Horse Race and buttons to navigate back to `Statistics` and `Horse Customisation`.
