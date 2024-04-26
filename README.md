@@ -29,19 +29,17 @@ The Horse Racing Simulator, created using [Java](https://www.java.com/download/i
 - Visit the official Oracle website: [Oracle JDK Downloads](https://www.oracle.com/java/technologies/javase-jdk15-downloads.html).
 - Download the JDK version 17.0.8 for your operating system.
 
-### 2. Installing the github etc
+### 2. Installing the repository 
 
-### 2. Running the application
+- Select the current release `V.1.0.0` and download the zip file.
+- Unzip the file and save it to your personal computer. 
 
-- Navigate to the directory
+### 3. Running the application
 
-     ```bash
-     nodemon
-     ```
+- Navigate to the directory where you saved the zip file containing the codebase and run the `HorseRaceSim.bat` executable.
 
 # ⚙ Dependencies
 - Java (At least JDK 17.0.8)
-
 
 # 📝 Contributing
 Your contributions are always welcome. For major revisions, please start by opening an issue to discuss what you'd like to change.
