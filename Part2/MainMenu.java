@@ -89,7 +89,13 @@ public class MainMenu extends JFrame {
     }
 
     private boolean CreateFiles() {
-        String directoryPath = "I:\\TES\\HorseRace Starter\\";
+        
+        //Old Directory Path. 
+        //String directoryPath = "I:\\TES\\HorseRace Starter\\";
+
+        //New Directory Path:   
+        String directoryPath = System.getProperty("user.dir") + File.separator;
+
         File horseFile = new File(directoryPath + "horseAttribute.txt");
         File raceFile = new File(directoryPath + "raceResults.txt");
     
